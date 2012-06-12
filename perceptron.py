@@ -46,23 +46,23 @@ class Perceptron:
     def izracunaj_d3(self, izhod):
         self.d3 = (izhod-self.x3)*(1-self.x3)*self.x3  
         
-    def popravi_w23(self):
+    def delta_w23(self):
         input_1 = insert(self.x2,len(self.x2),1)
         for i in range(0,len(input_1)):
-            self.dw23[i,:] = self.w23[i,:]*self.d3*self.beta*input_1[i]
-        self.w23 = self.w23 + self.dw23
+            self.dw23[i,:] = self.d3*self.beta*input_1[i]
+        #self.w23 = self.w23 + self.dw23
         
-    def popravi_w12(self):
+    def delta_w12(self):
         input_1 = insert(self.x1,len(self.x1),1)
         for i in range(0,len(input_1)):
-            self.dw12[i,:] = self.w12[i,:]*self.d2*self.beta*input_1[i]
-        self.w12 = self.w12 + self.dw12
+            self.dw12[i,:] = self.d2*self.beta*input_1[i]
+        #self.w12 = self.w12 + self.dw12
         
-    def popravi_w01(self, vhod):
+    def delta_w01(self, vhod):
         input_1 = insert(vhod,len(vhod),1)
         for i in range(0,len(input_1)):
-            self.dw01[i,:] = self.w01[i,:]*self.d1*self.beta*input_1[i]
-        self.w01 = self.w01 + self.dw01        
+            self.dw01[i,:] = self.d1*self.beta*input_1[i]
+        #self.w01 = self.w01 + self.dw01        
         
       
     def izracunaj_d2(self):
@@ -78,11 +78,14 @@ class Perceptron:
     def vzvratno_ucenje(self,vhod,izhod):
         self.x123(vhod)        
         self.izracunaj_d3(izhod)
-        self.popravi_w23()
         self.izracunaj_d2()
-        self.popravi_w12()
         self.izracunaj_d1()
-        self.popravi_w01(vhod)        
+        self.delta_w23()        
+        self.delta_w12()        
+        self.delta_w01(vhod)
+        self.w23 = self.w23 + self.dw23
+        self.w12 = self.w12 + self.dw12
+        self.w01 = self.w01 + self.dw01
         
     def razvrsti(self, vhod):
         self.x123(vhod)
@@ -107,7 +110,7 @@ vh3 = array([1, 1])
 vh4 = array([0, 0])
 
 P = Perceptron(2,2,2)
-P.beta = 0.2
+P.beta = 0.5
 for i in range(0, 10000):
     P.vzvratno_ucenje(vh1, iz1)
     P.vzvratno_ucenje(vh2, iz1)
