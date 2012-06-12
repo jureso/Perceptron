@@ -20,12 +20,14 @@ class Perceptron:
         self.x1 = zeros(self.n1)
         self.x2 = zeros(self.n2)
         self.x3 = zeros(self.n3)
-        #self.dw12 = zeros((self.n2, self.n1+1)) #prvi argument je začetek povezave, drugi pa konec povezave
-        #self.dw23 = zeros((self.n3, self.n2+1))
-        #self.x2 = zeros((self.n2,1))
-        #self.x3 = zeros((self.n3,1))
-        #self.d3 = zeros((self.n3))
-        #self.d2 = zeros((self.n2)) 
+        
+        self.dw01 = zeros((self.n1 +1, self.n1)) 
+        self.dw12 = zeros((self.n1 +1, self.n2)) #prvi argument je začetek povezave, drugi pa konec povezave
+        self.dw23 = zeros((self.n2+1, self.n3))
+
+        self.d3 = zeros((self.n3))
+        self.d2 = zeros((self.n2))
+        self.d1 = zeros((self.n1))
         
     def x123(self,vhod):
         input_1 = insert(vhod,len(vhod),1)
@@ -41,34 +43,23 @@ class Perceptron:
             self.x3[i] = dot(self.w23[:,i], input_1)
             self.x3[i] = 1/(1+exp(-self.x3[i]))
         
-
-        
-    def izhod_xi(self, vhod, utezi):
-        #utezi:vrstica je izhodni nevron, stolpec je vir povezave
-        #vhod je stolpični vektor
-        temp = dot(utezi, insert(vhod,len(vhod),1))
-        return (1/(1+exp(-temp))).T               
-
-    def izhodi(self,vhod):
-        self.x2 = self.izhod_xi(vhod,self.w12).T
-        self.x3 = self.izhod_xi(self.x2,self.w23).T
-        
     def izracunaj_d3(self, izhod):
-        #izhod je stolpični vektor
-        self.d3 = (izhod-self.x3)*(1-self.x3)*self.x3          
+        self.d3 = (izhod-self.x3)*(1-self.x3)*self.x3  
+        
+    def popravi_w23(self):
+        input_1 = insert(self.x2,len(self.x2),1)
+        for i in range(0,len(self.x2)):
+            self.dw23[i,:] = self.w23[i,:]*self.d3*self.beta*self.x2[i]
+        self.w23 = self.w23 + self.dw23
+        
+        
+        
     def izracunaj_d2(self):
         ind = 0
         for x in self.x3:
             self.d2[ind] = (1-x)*x*sum(self.d3[ind]*self.w23[ind,:])
             ind += 1
 
-    def popravi_w3(self):
-        temp = insert(self.x2,len(self.x2),1)
-        ind = 0
-        for x in temp:
-             self.dw23[:,ind] = self.beta*self.d3*x
-             ind +=1        
-        self.w23 = self.w23 + self.dw23
         
     def popravi_w2(self, vhod):
         temp = insert(vhod,len(vhod),1)
