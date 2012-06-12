@@ -13,14 +13,35 @@ class Perceptron:
         self.n1 = n1plast
         self.n2 = n2plast
         self.n3 = n3plast
-        self.w12 = random.rand(self.n2, self.n1+1) - 0.5 + spacing(1) #prvi argument je začetek povezave, drugi pa konec povezave
-        self.w23 = random.rand(self.n3, self.n2+1) - 0.5 + spacing(1)
-        self.dw12 = zeros((self.n2, self.n1+1)) #prvi argument je začetek povezave, drugi pa konec povezave
-        self.dw23 = zeros((self.n3, self.n2+1))
+        self.w01 = random.rand(self.n1 +1, self.n1) - 0.5 + spacing(1) #prvi argument je začetek povezave, drugi pa konec povezave
+        self.w12 = random.rand(self.n1 +1, self.n2) - 0.5 + spacing(1)
+        self.w23 = random.rand(self.n2+1, self.n3) - 0.5 + spacing(1)
+        
+        self.x1 = zeros(self.n1)
+        self.x2 = zeros(self.n2)
+        self.x3 = zeros(self.n3)
+        #self.dw12 = zeros((self.n2, self.n1+1)) #prvi argument je začetek povezave, drugi pa konec povezave
+        #self.dw23 = zeros((self.n3, self.n2+1))
         #self.x2 = zeros((self.n2,1))
         #self.x3 = zeros((self.n3,1))
-        self.d3 = zeros((self.n3))
-        self.d2 = zeros((self.n2))
+        #self.d3 = zeros((self.n3))
+        #self.d2 = zeros((self.n2)) 
+        
+    def x123(self,vhod):
+        input_1 = insert(vhod,len(vhod),1)
+        for i in range(0,self.n1):
+            self.x1[i] = dot(self.w01[:,i], input_1)
+            self.x1[i] = 1/(1+exp(-self.x1[i]))
+        input_1 = insert(self.x1,len(self.x1),1)    
+        for i in range(0,self.n2):
+            self.x2[i] = dot(self.w12[:,i], input_1)
+            self.x2[i] = 1/(1+exp(-self.x2[i]))
+        input_1 = insert(self.x2,len(self.x2),1)     
+        for i in range(0,self.n3):
+            self.x3[i] = dot(self.w23[:,i], input_1)
+            self.x3[i] = 1/(1+exp(-self.x3[i]))
+        
+
         
     def izhod_xi(self, vhod, utezi):
         #utezi:vrstica je izhodni nevron, stolpec je vir povezave
@@ -77,7 +98,7 @@ def main():
     iz = array([[4.], [5.], [6.]])
     P1 = Perceptron(3, 3, 3)
     print P1.w23
-    P1.vzvratno_ucenje(vh,iz)
+    #P1.vzvratno_ucenje(vh,iz)
     print P1.w23
     
 if __name__ == "__main__":
