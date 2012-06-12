@@ -50,7 +50,20 @@ class Perceptron:
         input_1 = insert(self.x2,len(self.x2),1)
         for i in range(0,len(input_1)):
             self.dw23[i,:] = self.w23[i,:]*self.d3*self.beta*input_1[i]
-        self.w23 = self.w23 + self.dw23   
+        self.w23 = self.w23 + self.dw23
+        
+    def popravi_w12(self):
+        input_1 = insert(self.x1,len(self.x1),1)
+        for i in range(0,len(input_1)):
+            self.dw12[i,:] = self.w12[i,:]*self.d2*self.beta*input_1[i]
+        self.w12 = self.w12 + self.dw12
+        
+    def popravi_w01(self, vhod):
+        input_1 = insert(vhod,len(vhod),1)
+        for i in range(0,len(input_1)):
+            self.dw01[i,:] = self.w01[i,:]*self.d1*self.beta*input_1[i]
+        self.w01 = self.w01 + self.dw01        
+        
       
     def izracunaj_d2(self):
         temp = sum(self.w23*self.d3, axis = 1)
@@ -60,27 +73,19 @@ class Perceptron:
         temp = sum(self.w12*self.d2, axis = 1)
         self.d1 = (1-self.x1)*self.x1*temp[0:-1]
 
-        
-    def popravi_w2(self, vhod):
-        temp = insert(vhod,len(vhod),1)
-        ind = 0
-        for x in temp:      
-            self.dw12[:,ind] = self.beta*self.d2*x
-            ind +=1
-        self.w12 = self.w12 + self.dw12      
  
         
     def vzvratno_ucenje(self,vhod,izhod):
-        self.izhodi(vhod)        
+        self.x123(vhod)        
         self.izracunaj_d3(izhod)
+        self.popravi_w23()
         self.izracunaj_d2()
-        #self.izracunaj_d1()
-        self.popravi_w3()        
-        #self.popravi_w2()
-        self.popravi_w2(vhod)
+        self.popravi_w12()
+        self.izracunaj_d1()
+        self.popravi_w01(vhod)        
         
     def razvrsti(self, vhod):
-        self.izhodi(vhod)
+        self.x123(vhod)
         return self.x3
         
         
@@ -93,12 +98,37 @@ def main():
     
 if __name__ == "__main__":
     main()
-P = Perceptron(3,4,2)
-v = array([1, 0.5, 0.7])
-iz = array([1,0])
-P.x123(v)
-P.izracunaj_d3(iz)
-print P.w23
-P.popravi_w23()
-print P.w23
-P.izracunaj_d2()
+    
+iz1 = array([0, 1])
+iz2 = array([1, 0])
+vh1 = array([1, 0])
+vh2 = array([0, 1])
+vh3 = array([1, 1])
+vh4 = array([0, 0])
+
+P = Perceptron(2,2,2)
+P.beta = 0.2
+for i in range(0, 10000):
+    P.vzvratno_ucenje(vh1, iz1)
+    P.vzvratno_ucenje(vh2, iz1)
+    P.vzvratno_ucenje(vh3, iz2)
+    P.vzvratno_ucenje(vh4, iz2)
+    
+print P.razvrsti(vh1)
+print P.razvrsti(vh2)
+print P.razvrsti(vh3)
+print P.razvrsti(vh4)
+#P = Perceptron(3,4,2)
+#v = array([1, 0.5, 0.7])
+#iz = array([1,0])
+#P.x123(v)
+#P.izracunaj_d3(iz)
+#print P.w23
+#P.popravi_w23()
+#print P.w23
+#P.izracunaj_d2()
+#print P.w12
+#P.popravi_w12()
+#print P.w12
+#P.izracunaj_d1()
+#P.popravi_w01(v)
