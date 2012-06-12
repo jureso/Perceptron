@@ -48,17 +48,17 @@ class Perceptron:
         
     def popravi_w23(self):
         input_1 = insert(self.x2,len(self.x2),1)
-        for i in range(0,len(self.x2)):
-            self.dw23[i,:] = self.w23[i,:]*self.d3*self.beta*self.x2[i]
-        self.w23 = self.w23 + self.dw23
-        
-        
-        
+        for i in range(0,len(input_1)):
+            self.dw23[i,:] = self.w23[i,:]*self.d3*self.beta*input_1[i]
+        self.w23 = self.w23 + self.dw23   
+      
     def izracunaj_d2(self):
-        ind = 0
-        for x in self.x3:
-            self.d2[ind] = (1-x)*x*sum(self.d3[ind]*self.w23[ind,:])
-            ind += 1
+        temp = sum(self.w23*self.d3, axis = 1)
+        self.d2 = (1-self.x2)*self.x2*temp[0:-1]
+        
+    def izracunaj_d1(self):
+        temp = sum(self.w12*self.d2, axis = 1)
+        self.d1 = (1-self.x1)*self.x1*temp[0:-1]
 
         
     def popravi_w2(self, vhod):
@@ -88,14 +88,17 @@ def main():
     vh = array([[1], [2], [3]])
     iz = array([[4.], [5.], [6.]])
     P1 = Perceptron(3, 3, 3)
-    print P1.w23
+    #print P1.w23
     #P1.vzvratno_ucenje(vh,iz)
-    print P1.w23
     
 if __name__ == "__main__":
     main()
-        
-#vh = array([[1], [2], [3]])
-#iz = array([4., 5., 6.])
-#P1 = Perceptron(3, 3, 3)       
-#P1.vzvratno_ucenje(vh,iz)
+P = Perceptron(3,4,2)
+v = array([1, 0.5, 0.7])
+iz = array([1,0])
+P.x123(v)
+P.izracunaj_d3(iz)
+print P.w23
+P.popravi_w23()
+print P.w23
+P.izracunaj_d2()
