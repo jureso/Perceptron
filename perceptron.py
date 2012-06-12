@@ -81,7 +81,7 @@ class Perceptron:
         self.w23 = self.w23 + self.dw23
         self.w12 = self.w12 + self.dw12
         self.w01 = self.w01 + self.dw01
-        return max(self.dw01.max(), self.dw01.max(),self.dw01.max())
+        return max(abs(self.dw01).max(), abs(self.dw01).max(),abs(self.dw01).max())
         
     def razvrsti(self, vhod):
         self.x123(vhod)
