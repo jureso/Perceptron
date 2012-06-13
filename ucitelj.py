@@ -11,7 +11,7 @@ from time import time
 
 class Ucitelj:
     toleranca = 0.000001
-    maxiter = 50000
+    maxiter = 100
     def __init__(self, vhodi, izhodi):
         if isinstance(vhodi, str):
             print 'Nismo še tam'            
@@ -27,9 +27,10 @@ class Ucitelj:
         while iter < self.maxiter:
             for i in range(0, self.n_vzorcev):
                 delta_w = self.P.vzvratno_ucenje(vhodi[i,:],izhodi[i,:])
-            if (delta_w < self.toleranca) and (inter > 0.1*maxiter):
+            if (delta_w < self.toleranca) and (iter > 0.1*self.maxiter):
                 break            
             iter += 1
+        print iter
         elapsed = (time()-start)
         return delta_w, iter, elapsed
     
@@ -79,8 +80,10 @@ def main():
         vhodi[i,:] = a[i,0:-1]
         izhodi[i,a[i,-1]-1] = 1
     U = Ucitelj(vhodi,izhodi)
-    U.nastavi_ucenje(500)
+    U.nastavi_ucenje(200)
+    print 'start'
     dw, iteracij, cas = U.ucenje(vhodi,izhodi)
+    print 'end'
     print dw
     print iteracij
     print cas
