@@ -11,7 +11,7 @@ from time import time
 
 class Ucitelj:
     toleranca = 0.000001
-    maxiter = 100
+    maxiter = 300
     def __init__(self, vhodi, izhodi):
         if isinstance(vhodi, str):
             print 'Nismo še tam'            
@@ -36,7 +36,7 @@ class Ucitelj:
     
     def testiraj(self, vhodi, izhodi):
         n_vzorcev, dim_vzorcev = vhodi.shape
-        n_vzorcev, n_razredov = vhodi.shape
+        n_vzorcev, n_razredov = izhodi.shape
         uspesnost = zeros(n_razredov)
         stevilo_vzorcev = zeros(n_razredov)
         for i in range(0, n_vzorcev):
@@ -45,7 +45,7 @@ class Ucitelj:
             if razred.argmax() == izhodi[i,:].argmax():
                 uspesnost[izhodi[i,:].argmax()] += 1
         uspesnost = uspesnost/stevilo_vzorcev
-        return uspesnost          
+        return uspesnost, stevilo_vzorcev         
         
             
 
@@ -80,19 +80,25 @@ def main():
         vhodi[i,:] = a[i,0:-1]
         izhodi[i,a[i,-1]-1] = 1
     U = Ucitelj(vhodi,izhodi)
+    print U.n_razredov
+    print U.n_vzorcev
     U.nastavi_ucenje(200)
     print 'start'
     dw, iteracij, cas = U.ucenje(vhodi,izhodi)
     print 'end'
     print dw
     print iteracij
-    print cas
-#    print U.P.razvrsti(vhodi[0,:])
-#    print U.P.razvrsti(vhodi[1,:])
-#    print U.P.razvrsti(vhodi[2,:])
-#    print U.P.razvrsti(vhodi[3,:])
+    print cas    
+    save('w01', U.P.w01)
+    save('w12', U.P.w12)
+    save('w23', U.P.w23)
     
-    print U.testiraj(vhodi,izhodi)
+    
+    
+    
+    uspesnost, stevilo_vzorcev = U.testiraj(vhodi,izhodi)
+    print uspesnost
+    print stevilo_vzorcev
 
 if __name__ == "__main__":
     main()
