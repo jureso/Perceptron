@@ -11,16 +11,24 @@ import pylab
 class Perceptron:
     beta = 0.5       
     def __init__(self, n1plast, n2plast, n3plast):
-        self.n1 = n1plast
-        self.n2 = n2plast
-        self.n3 = n3plast
-        self.w01 = random.rand(self.n1 +1, self.n1) - 0.5 + spacing(1) #prvi argument je začetek povezave, drugi pa konec povezave
-        self.w12 = random.rand(self.n1 +1, self.n2) - 0.5 + spacing(1)
-        self.w23 = random.rand(self.n2+1, self.n3) - 0.5 + spacing(1)
-        
-        self.x1 = zeros(self.n1)
-        self.x2 = zeros(self.n2)
-        self.x3 = zeros(self.n3)
+        #lahko ga definiramo s prej naučenimi matrikami uteži, ali pa samo določimo strukturo
+        if isinstance(n1plast, ndarray): #podane so matrike uteži
+            self.w01 = n1plast
+            self.w12 = n2plast
+            self.w23 = n3plast
+            self.n1 = n1plast.shape[1]
+            self.n2 = n2plast.shape[1]
+            self.n3 = n3plast.shape[1]
+        else: #podana je samo struktura
+            self.n1 = n1plast
+            self.n2 = n2plast
+            self.n3 = n3plast
+            self.w01 = random.rand(self.n1 +1, self.n1) - 0.5 + spacing(1) #prvi argument je začetek povezave, drugi pa konec povezave
+            self.w12 = random.rand(self.n1 +1, self.n2) - 0.5 + spacing(1)
+            self.w23 = random.rand(self.n2+1, self.n3) - 0.5 + spacing(1)        
+            self.x1 = zeros(self.n1)
+            self.x2 = zeros(self.n2)
+            self.x3 = zeros(self.n3)
         
         self.dw01 = zeros((self.n1 +1, self.n1)) 
         self.dw12 = zeros((self.n1 +1, self.n2)) #prvi argument je začetek povezave, drugi pa konec povezave
