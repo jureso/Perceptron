@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jun  3 20:40:04 2012
+Copyright (c) 2012 University of Ljubljana, Faculty of Electrical Engineering.
+All rights reserved. Licensed under the Academic Free License version 3.0.
 
-@author: jureso
+@author Jure Sokolić, jure.sokolic@gmail.com
+@version 15/06/2012
+
 """
 
 from numpy  import *
@@ -25,10 +28,11 @@ class Perceptron:
             self.n3 = n3plast
             self.w01 = random.rand(self.n1 +1, self.n1) - 0.5 + spacing(1) #prvi argument je začetek povezave, drugi pa konec povezave
             self.w12 = random.rand(self.n1 +1, self.n2) - 0.5 + spacing(1)
-            self.w23 = random.rand(self.n2+1, self.n3) - 0.5 + spacing(1)        
-            self.x1 = zeros(self.n1)
-            self.x2 = zeros(self.n2)
-            self.x3 = zeros(self.n3)
+            self.w23 = random.rand(self.n2+1, self.n3) - 0.5 + spacing(1) 
+            
+        self.x1 = zeros(self.n1)
+        self.x2 = zeros(self.n2)
+        self.x3 = zeros(self.n3)
         
         self.dw01 = zeros((self.n1 +1, self.n1)) 
         self.dw12 = zeros((self.n1 +1, self.n2)) #prvi argument je začetek povezave, drugi pa konec povezave
