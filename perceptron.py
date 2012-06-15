@@ -9,7 +9,6 @@ All rights reserved. Licensed under the Academic Free License version 3.0.
 """
 
 from numpy  import *
-import pylab
 
 class Perceptron:
     beta = 0.5       
@@ -118,9 +117,6 @@ def main():
         P.vzvratno_ucenje(vh2, iz1)
         P.vzvratno_ucenje(vh3, iz2)
         y[i]=   P.vzvratno_ucenje(vh4, iz2)
-        
-    pylab.plot(x,y)
-    pylab.show()
         
     print P.razvrsti(vh1)
     print P.razvrsti(vh2)

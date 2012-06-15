@@ -51,8 +51,7 @@ class Ucitelj:
             
 
 def main():
-    #vhodi = array([[0, 1],[1, 0], [0,0], [1,1]])
-    #izhodi = array([[1,0],[1,0],[0,1],[0,1]])
+    print 'Glej tester.py'
 
 if __name__ == "__main__":
     main()
