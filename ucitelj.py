@@ -18,10 +18,11 @@ class Ucitelj:
     def __init__(self, arg1, arg2, arg3): #stevilo znacilk, srednje plasti in razredov ali pa matrike w
         self.P = Perceptron(arg1, arg2, arg3)
         
-    def parametri(self, toleranca, maxiter):
+    def parametri(self, toleranca, maxiter, beta):
         self.toleranca = toleranca
-        self.maxiter = maxiter        
-            
+        self.maxiter = maxiter
+        self.P.beta = beta
+    
     def ucenje(self, vhodi, izhodi):
         start = time()
         iter = 0
@@ -34,7 +35,8 @@ class Ucitelj:
             iter += 1
         elapsed = (time()-start)
         return delta_w, iter, elapsed
-    
+        
+    # razvrsti vse vzorce in vrne statistiko
     def testiraj(self, vhodi, izhodi):
         n_vzorcev, dim_vzorcev = vhodi.shape
         n_vzorcev, n_razredov = izhodi.shape
@@ -47,11 +49,3 @@ class Ucitelj:
                 uspesnost[izhodi[i,:].argmax()] += 1
         uspesnost = uspesnost/stevilo_vzorcev
         return uspesnost, stevilo_vzorcev         
-        
-            
-
-def main():
-    print 'Glej tester.py'
-
-if __name__ == "__main__":
-    main()

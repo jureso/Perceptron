@@ -9,8 +9,8 @@ All rights reserved. Licensed under the Academic Free License version 3.0.
 """
 import mmap
 from numpy import *
-
-class Vzorci: #Za branje datotek tipa isolet5.data
+# Razred lahko interpretira datoteke z vzorci tipa isolet5.data
+class Vzorci:
     def __init__(self, ucni_vzorci, testni_vzorci, n_znacilk, n_razredov):
         self.ucni = ucni_vzorci
         self.testni = testni_vzorci
@@ -22,6 +22,7 @@ class Vzorci: #Za branje datotek tipa isolet5.data
         self.znacilke_ucni, self.razredi_ucni = self.naredi_polja(ucni_vzorci,self.n_ucni, n_znacilk,n_razredov)
         self.znacilke_testni, self.razredi_testni = self.naredi_polja(testni_vzorci,self.n_testni, n_znacilk,n_razredov)
     
+    # praktično samo prešteje število vrstic
     def st_vzorcev(self,datoteka):
         f = open(datoteka, 'r')
         lines = 0
@@ -34,6 +35,7 @@ class Vzorci: #Za branje datotek tipa isolet5.data
         f.close()
         return lines
     
+    # celotno txt datoteko pretvori v dve polji: znacilke in razredi
     def naredi_polja(self,datoteka, st_vrstic, st_znacilk, st_razredov):
         a = zeros((st_vrstic, st_znacilk+1))
         vhodi = zeros((st_vrstic, st_znacilk))

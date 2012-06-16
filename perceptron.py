@@ -25,22 +25,23 @@ class Perceptron:
             self.n1 = n1plast
             self.n2 = n2plast
             self.n3 = n3plast
+            # naključna inicializacija matrik uteži
             self.w01 = random.rand(self.n1 +1, self.n1) - 0.5 + spacing(1) #prvi argument je začetek povezave, drugi pa konec povezave
             self.w12 = random.rand(self.n1 +1, self.n2) - 0.5 + spacing(1)
             self.w23 = random.rand(self.n2+1, self.n3) - 0.5 + spacing(1) 
-            
+        # vektorji xx vsebujejo izhodne vrednosti nevronov v plasti x    
         self.x1 = zeros(self.n1)
         self.x2 = zeros(self.n2)
         self.x3 = zeros(self.n3)
-        
+        # matrike, ki vsebujejo popravke uteži
         self.dw01 = zeros((self.n1 +1, self.n1)) 
-        self.dw12 = zeros((self.n1 +1, self.n2)) #prvi argument je začetek povezave, drugi pa konec povezave
+        self.dw12 = zeros((self.n1 +1, self.n2))
         self.dw23 = zeros((self.n2+1, self.n3))
-
+        # pomožne spremeljivke za popravke uteži
         self.d3 = zeros((self.n3))
         self.d2 = zeros((self.n2))
         self.d1 = zeros((self.n1))
-        
+    # fukcija izračuna stanja nevronov    
     def x123(self,vhod):
         input_1 = insert(vhod,len(vhod),1)
         for i in range(0,self.n1):
@@ -80,7 +81,8 @@ class Perceptron:
     def izracunaj_d1(self):
         temp = sum(self.w12*self.d2, axis = 1)
         self.d1 = (1-self.x1)*self.x1*temp[0:-1]
-        
+    
+    # korak vzvratnega učenja
     def vzvratno_ucenje(self,vhod,izhod):
         self.x123(vhod)        
         self.izracunaj_d3(izhod)
@@ -93,13 +95,13 @@ class Perceptron:
         self.w12 = self.w12 + self.dw12
         self.w01 = self.w01 + self.dw01
         return max(abs(self.dw01).max(), abs(self.dw01).max(),abs(self.dw01).max())
-        
+    # vrne izhod perceptrona
     def razvrsti(self, vhod):
         self.x123(vhod)
         return self.x3
         
-        
-def main():
+# Primer za XOR vezje
+def main():    
     iz1 = array([0, 1])
     iz2 = array([1, 0])
     vh1 = array([1, 0])
@@ -109,14 +111,11 @@ def main():
     
     P = Perceptron(2,2,2)
     P.beta = 0.5
-    x =zeros(10000)
-    y =zeros(10000)
     for i in range(0, 10000):
-        x[i] = i
         P.vzvratno_ucenje(vh1, iz1)
         P.vzvratno_ucenje(vh2, iz1)
         P.vzvratno_ucenje(vh3, iz2)
-        y[i]=   P.vzvratno_ucenje(vh4, iz2)
+        P.vzvratno_ucenje(vh4, iz2)
         
     print P.razvrsti(vh1)
     print P.razvrsti(vh2)
